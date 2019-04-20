@@ -1,5 +1,15 @@
 from flask import Flask
+from flask_migrate import Migrate
+from .config import config
 
-app = Flask(__name__)
+def create_app():
+    from . import models, routes
+    app = Flask(__name__)
+    app.config.from_object(config)
 
-from app import views
+    models.init_app(app)
+    routes.init_app(app)
+
+    return app
+
+app = create_app()
