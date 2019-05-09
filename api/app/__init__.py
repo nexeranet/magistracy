@@ -9,7 +9,6 @@ def create_app():
 
     models.init_app(app)
     routes.init_app(app)
-
     return app
 
 app = create_app()

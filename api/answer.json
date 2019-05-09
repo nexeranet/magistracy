@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 194552073,
+      "message": {
+        "message_id": 18,
+        "from": {
+          "id": 390306402,
+          "is_bot": false,
+          "first_name": "Oleh",
+          "last_name": "K.",
+          "username": "nexeranet",
+          "language_code": "ru"
+        },
+        "chat": {
+          "id": 390306402,
+          "first_name": "Oleh",
+          "last_name": "K.",
+          "username": "nexeranet",
+          "type": "private"
+        },
+        "date": 1557428258,
+        "text": "hello"
+      }
+    },
+    {
+      "update_id": 194552074,
+      "message": {
+        "message_id": 19,
+        "from": {
+          "id": 390306402,
+          "is_bot": false,
+          "first_name": "Oleh",
+          "last_name": "K.",
+          "username": "nexeranet",
+          "language_code": "ru"
+        },
+        "chat": {
+          "id": 390306402,
+          "first_name": "Oleh",
+          "last_name": "K.",
+          "username": "nexeranet",
+          "type": "private"
+        },
+        "date": 1557428262,
+        "text": "hello"
+      }
+    }
+  ]
+}
