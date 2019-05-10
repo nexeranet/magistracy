@@ -13,12 +13,12 @@ def write_json(data, filename='answer.json'):
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 def get_chat_id():
-    u = URL + 'getUpdates'
-    r = requests.get(u)
-    data = r.json()
+    # u = URL + 'getUpdates'
+    # r = requests.get(u)
+    # data = r.json()
     print('Bot init')
-    if data['ok'] == True : 
-        chat_id = data['result'][-1]['message']['chat']['id']
+    # if data['ok'] == True : 
+        # chat_id = data['result'][-1]['message']['chat']['id']
 
 get_chat_id()
 

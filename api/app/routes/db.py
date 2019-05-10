@@ -9,12 +9,14 @@
 from flask import jsonify, Blueprint
 import json, requests
 from app.services.bot import bot 
-from app.models.base import User, db
+from app.models.base import db, main_int  
 from app.services.coin_api import coin_api
 
 tbot = bot('routes/db')
 
 crypto = coin_api()
+
+tr_db = main_int()
 
 apidb = Blueprint('apidb', __name__, template_folder='templates' )
 
@@ -26,14 +28,16 @@ def index():
 
 @apidb.route('/create_all')
 def craate_all():
-    # db.create_all()
+    tr_db.create_all_tables()
     # client = User(username='oleh',email='oleh@mail.com')
     # db.session.add(client)
     # db.session.commit()
     try:
-        return 'true hi'
+        db.create_all()
     except:
         return 'Error' 
+
+    return 'table craate_all'
 
 @apidb.route('alter_tables')
 def alter_tables():
@@ -41,6 +45,8 @@ def alter_tables():
 
 @apidb.route('drop_tables')
 def drop_tables():
+    db.session.commit()   #<--- solution!
+    db.drop_all()
     return 'drop'
 
 @apidb.route('add_info_by_minutes')
