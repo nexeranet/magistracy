@@ -72,7 +72,7 @@ def by_minutes():
         if (now - lm30) >= 1800 or lm30 == 0: 
             tr_db.add_by_minutes_info(cc=cc, interval=30, data=data['Data'])
 
-    tbot.sendMessage('Parse minutes for coins: {}'.format(tr_db.crypto_currencies))
+    tbot.sendMessage('INSERTED coins by minutes: {}'.format(tr_db.crypto_currencies))
     return 'by_minutes'
 
 @apidb.route('add_info_by_hours')
@@ -81,12 +81,30 @@ def by_hours():
 
     for cc in tr_db.crypto_currencies: 
         data = crypto.get_hours(cc) 
-        print('hell')
-    tbot.sendMessage('Parse hours for coins: {}'.format(tr_db.crypto_currencies))
+
+        # N*60*60 , N - 1 || 4 
+
+        lh1 = tr_db.get_last_updating_time_by_hours(cc=cc,interval=1)
+
+        if (now - lh1) >= 3600 or lh1 == 0:
+            tr_db.add_info_by_hours(cc=cc,interval=1,data=data['Data'])
+        
+        lh4 = tr_db.get_last_updating_time_by_hours(cc=cc,interval=4)
+
+        if (now - lh4) >= 14440 or lh4 == 0:
+            tr_db.add_info_by_hours(cc=cc,interval=4,data=data['Data'])
+
+    tbot.sendMessage('INSERTED coins by hours: {}'.format(tr_db.crypto_currencies))
     return 'by_hours'
 
 @apidb.route('add_info_by_day')
 def by_day():
+    for cc in tr_db.crypto_currencies:
+        data = crypto.get_day(cc)
+        tr_db.add_by_day_info(cc=cc,data=data['Data'])
+        
+    tbot.sendMessage('INSERTED coins by day: {}'.format(tr_db.crypto_currencies))
+
     return 'by_day'
 
 

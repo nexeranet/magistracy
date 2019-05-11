@@ -127,3 +127,10 @@ class main_int(object):
 
         db.session.add(coin)
         db.session.commit()
+    
+    def add_by_day_info(self, cc, data):
+        table = self.table_creator('{}_D1'.format(cc)) 
+        coin = table(data[1]['time'], data[1]['open'],data[1]['high'], data[1]['low'], data[1]['close'])
+        db.session.add(coin)
+        db.session.commit()
+    
