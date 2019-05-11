@@ -3,10 +3,12 @@
 import requests, json 
 from datetime import datetime
 from flask import jsonify
-
+from pytz import timezone
 TOKEN = '745808780:AAEyL5EGVrPWwUPXQpRol5TOYarkH-vF87Q' 
 URL = 'https://api.telegram.org/bot{}/'.format(TOKEN)
 chat_id = '390306402'
+
+tzkiev = timezone('Europe/Kiev')
 
 def write_json(data, filename='answer.json'):
     with open(filename, 'w') as f:
@@ -46,11 +48,11 @@ class bot(object):
 
     def sendMessage(self, text='bla bla'): 
         u = URL + 'sendMessage'
-
-        now = 'Дата: {}'.format(datetime.now()) 
+        kvtime = datetime.now(tzkiev) 
+        now = 'Дата: {}'.format(kvtime) 
         module = 'Модуль: {}'.format(self.module)
         text = str(text)
-        f_txt = (text[:4040] + '..') if len(text) > 4096 else text 
+        f_txt = (text[:4000] + '..') if len(text) > 4096 else text 
 
         msg = '<i>{}</i>\n<b>{}</b>\n<code>{}</code>'.format(now, module, f_txt)
 
