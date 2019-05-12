@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
+from sqlalchemy.sql import text
 from datetime import datetime
 import time
 
@@ -133,4 +134,10 @@ class main_int(object):
         coin = table(data[1]['time'], data[1]['open'],data[1]['high'], data[1]['low'], data[1]['close'])
         db.session.add(coin)
         db.session.commit()
+    
+    def get_last_candles(self, cc, period, number_of_candles):
+        query = text("SELECT * FROM \"{}_{}\" ORDER BY writing_time DESC LIMIT {} OFFSET 1".format(cc, period, number_of_candles))
+        result = db.engine.execute(query)
+        return result
+
     
