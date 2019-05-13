@@ -1,0 +1,20 @@
+        if not cc['lwmas'][0] == None and cc['lwmas'][0]['last_candle'] <= cc['lwmas'][0]['val']:
+            cc['sell_scores'] += api_config.tahometer_scores['MA14']
+        elif cc['lwmas'][0] == None and cc['lwmas'][0]['last_candle'] > cc['lwmas'][0]['val']: 
+            cc['buy_scores'] += api_config.tahometer_scores['MA14']
+
+        if not cc['lwmas'][1] == None and cc['lwmas'][1]['last_candle'] <= cc['lwmas'][1]['val']:
+            cc['sell_scores'] += api_config.tahometer_scores['MA55']
+        elif cc['lwmas'][1] == None and cc['lwmas'][1]['last_candle'] > cc['lwmas'][0]['val']: 
+            cc['buy_scores'] += api_config.tahometer_scores['MA55']
+    
+        if not cc['lwmas'][2] == None and cc['lwmas'][2]['last_candle'] <= cc['lwmas'][2]['val']:
+            cc['sell_scores'] += api_config.tahometer_scores['MA120']
+        elif cc['lwmas'][2] == None and cc['lwmas'][2]['last_candle'] > cc['lwmas'][2]['val']: 
+            cc['buy_scores'] += api_config.tahometer_scores['MA120']
+
+        if not cc['lwmas'][3] == None and cc['lwmas'][3]['last_candle'] <= cc['lwmas'][3]['val']:
+            cc['sell_scores'] += api_config.tahometer_scores['MA240']
+        elif cc['lwmas'][3] == None and cc['lwmas'][3]['last_candle'] > cc['lwmas'][3]['val']: 
+            cc['buy_scores'] += api_config.tahometer_scores['MA240']
+

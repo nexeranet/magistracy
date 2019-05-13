@@ -138,6 +138,7 @@ class main_int(object):
     def get_last_candles(self, cc, period, number_of_candles):
         query = text("SELECT * FROM \"{}_{}\" ORDER BY writing_time DESC LIMIT {} OFFSET 1".format(cc, period, number_of_candles))
         result = db.engine.execute(query)
-        return result
+        rows = result.fetchall() 
+        return rows
 
     
