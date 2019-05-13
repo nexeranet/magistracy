@@ -24,24 +24,71 @@ def write_json(data, filename='answer.json'):
     with open(filename, 'w') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
+#
+# OLD API ROUTES
+#
 
 @api.route("/old/quotes/<time>")
-def index(time='M5'):
-    headers = {"Accept": "*/*", "Connection": "Keep-Alive", "User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12)     Gecko/20050915 Firefox/1.0.7"}
-    r = requests.get('http://crypto-quotes.tsianalytics.com/apiquotes/{}'.format(time), headers=headers)    
-    data = r.json() 
-    return jsonify(data) 
+def old_quotes(time='M5'):
+    time = time.upper()
+    if time in api_config.times:
+        headers = {"Accept": "*/*", "Connection": "Keep-Alive", "User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12)     Gecko/20050915 Firefox/1.0.7"}
+        r = requests.get('http://crypto-quotes.tsianalytics.com/apiquotes/{}'.format(time), headers=headers)    
+        data = r.json() 
+        return jsonify(data) 
+    else:
+        data = json_str['std_error']
+        data['message'] = 'error. invalid timeframe'
+        return jsonify(data) 
+
+@api.route("/old/correlations/<time>/<int:num>")
+def old_correlations(time = 'M15', num = 15):
+    time= time.upper()
+    if time not in api_config.correlations_times or num not in api_config.correlations_periods:
+        print(time, num)
+        data = json_str['std_error']
+        data['message'] = 'error. invalid params'
+        return jsonify(data)
+    else:
+        headers = {"Accept": "*/*", "Connection": "Keep-Alive", "User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12)     Gecko/20050915 Firefox/1.0.7"}
+        r = requests.get('http://crypto-quotes.tsianalytics.com/api_correlations/{}/{}'.format(time, num), headers=headers)    
+        data = r.json() 
+        return jsonify(data) 
+@api.route("/old/get_tahometer/<coin>/<time>")
+def old_get_tahometer(coin="BTC", time='M5'):
+    if time not in api_config.times or coin not in api_config.crypto_currencies:
+        print(time, num)
+        data = json_str['std_error']
+        data['message'] = 'error. invalid params'
+        return jsonify(data)
+    else:
+        headers = {"Accept": "*/*", "Connection": "Keep-Alive", "User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12)     Gecko/20050915 Firefox/1.0.7"}
+        r = requests.get('http://crypto-quotes.tsianalytics.com/get_tahometer/{}/{}'.format(coin, time), headers=headers)    
+        res = r.json()
+        data = json_str['std_data']
+        data['data']= str(res)
+        return jsonify(data)  
+
+
+#
+# MAIN API ROUTES
+#
 
 @api.route("/quotes/")
 def q_default():
-    return redirect('M5', code=302) 
+    return redirect('M15', code=302) 
 
 @api.route("/quotes/<period>")
 def quotes(period='M5'):
-
-    data = json_str['str_data']
+    period = period.upper()
+    if period not in api_config.times:
+        data = json_str['std_error']
+        data['message'] = 'Error. Invalid timeframe'
+        return jsonify(data) 
+        
+    data = json_str['std_data']
     data['data']['crypto_currencies'] = []
-    for cc  in api_config.crypto_currencies:
+    for cc in api_config.crypto_currencies:
         currency = {}
         currency['name'] = cc 
         data['data']['crypto_currencies'].append(currency)
@@ -129,5 +176,8 @@ def quotes(period='M5'):
         cc['buy_percent'] = 0 if scores_sum == 0 else (cc['buy_scores']*100)/scores_sum 
         cc['tahometer_percent'] = 50 if scores_sum == 0 else (cc['buy_scores']*100)/scores_sum 
 
-    return jsonify(data) 
+    return jsonify(data)
 
+@api.route('/quote/<coin>/<period>')
+def quote(coin="BTC", period='M5'):
+    pass

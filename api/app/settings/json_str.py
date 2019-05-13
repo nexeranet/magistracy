@@ -1,13 +1,13 @@
 json_str = {
-        "str_data" : {
+        "std_data" : {
             "status" : "success",
             "data" : {} 
         },
-        "str_error": {
+        "std_error": {
             "status" : "error",
             "message" : "" 
         },
-        "str_fail": {
+        "std_fail": {
             "status" : "fail",
             "data" : {}
         }
