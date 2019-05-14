@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from sqlalchemy.sql import text
-from datetime import datetime
 import time
 
 db = SQLAlchemy()
@@ -62,12 +61,12 @@ class main_int(object):
         class Coin_tb(db.Model):
             __table_args__ = {'extend_existing': True}
             __tablename__ = table_name
-            for_time =     db.Column(db.Integer, nullable=False)
+            for_time = db.Column(db.Integer, nullable=False)
             writing_time = db.Column(db.Integer, nullable=False, primary_key=True)
-            c_open =       db.Column(db.DECIMAL(15, 4), nullable=True)
-            high =         db.Column(db.DECIMAL(15, 4), nullable=True)
-            low =          db.Column(db.DECIMAL(15, 4), nullable=True)
-            close =        db.Column(db.DECIMAL(15, 4), nullable=True)
+            c_open = db.Column(db.DECIMAL(15, 4), nullable=True)
+            high = db.Column(db.DECIMAL(15, 4), nullable=True)
+            low = db.Column(db.DECIMAL(15, 4), nullable=True)
+            close = db.Column(db.DECIMAL(15, 4), nullable=True)
 
             def __init__(self, for_time, c_open, high, low, close):
                 self.writing_time = int(time.time())
@@ -78,17 +77,17 @@ class main_int(object):
                 self.close = close
 
             def __repr__(self):
-                return '<Coin table: %r>' % table_name 
+                return '<Coin table: %r>' % table_name
 
         return Coin_tb
 
-    def get_last_updating_time_by_minutes(self, cc, interval): 
+    def get_last_updating_time_by_minutes(self, cc, interval):
         table = self.table_creator('{}_M{}'.format(cc, interval))
-        q = db.session.query(func.max(table.writing_time).label('average')).scalar() 
+        q = db.session.query(func.max(table.writing_time).label('average')).scalar()
 
         return q if q is not None else 0
 
-    def add_by_minutes_info(self, cc, interval, data): 
+    def add_by_minutes_info(self, cc, interval, data):
         index = 30 - interval
         high = data[30]['high']
         low = data[30]['low']

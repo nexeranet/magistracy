@@ -1,21 +1,22 @@
-## https://min-api.cryptocompare.com/data/histominute?fsym=BTC&tsym=USD&limit=30
+# https://min-api.cryptocompare.com/data/histominute?fsym=BTC&tsym=USD&limit=30
 import requests
 from app.services.bot import bot
 
 tbot = bot('services/coin_api')
 
+
 class coin_api(object):
 
-    def get_api(self,url): 
+    def get_api(self, url):
         # return json
-        # headers = defaults 
+        # headers = defaults
         try:
             r = requests.get(url)
         except requests.exceptions.Timeout:
             # Maybe set up for a retry, or continue in a retry loop
             error = {'errorType': 'Timeout', 'url': url}
             tbot.sendMessage(error)
-            return False 
+            return False
         except requests.exceptions.TooManyRedirects:
             # Tell the user their URL was bad and try a different one
             error = {'errorType': 'TooManyRedirects', 'url': url}
@@ -30,10 +31,10 @@ class coin_api(object):
         if data['Response'] == 'Success':
             return data
         else:
-            error = {'url':url,'data': data}
+            error = {'url': url, 'data': data}
             tbot.sendMessage(error)
             return False
- 
+
     def get_minutes(self, cc):
         # return json
         return self.get_api('https://min-api.cryptocompare.com/data/histominute?fsym={}&tsym=USD&limit=30'.format(cc))
@@ -44,5 +45,4 @@ class coin_api(object):
 
     def get_day(self, cc):
         # return json
-        return self.get_api('https://min-api.cryptocompare.com/data/histoday?fsym={}&tsym=USD&limit=1'.format(cc));
-
+        return self.get_api('https://min-api.cryptocompare.com/data/histoday?fsym={}&tsym=USD&limit=1'.format(cc))
