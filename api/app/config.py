@@ -1,6 +1,8 @@
-# SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:secret@dbp:5432/coins' 
+# SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:secret@dbp:5432/coins'
 
 import os
+
+
 class config(object):
     DEBAG = True
     POSTGRES = {
