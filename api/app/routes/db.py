@@ -1,10 +1,3 @@
-# $route['create_tables_once'] = 'apic/create_tables_once';
-# $route['alter_tables'] = 'apic/alter_tables';
-# $route['drop_tables'] = 'apic/drop_tables';
-# $route['add_info_by_minutes'] = 'apic/add_info_by_minutes';
-# $route['add_info_by_hours'] = 'apic/add_info_by_hours';
-# $route['add_info_by_day'] = 'apic/add_info_by_day';
-
 from flask import jsonify, Blueprint
 import time
 from app.services.bot import bot

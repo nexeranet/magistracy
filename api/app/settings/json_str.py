@@ -1,14 +1,14 @@
 json_str = {
-        "std_data" : {
-            "status" : "success",
-            "data" : {} 
-        },
+        "std_data": {
+            "status": "success",
+            "data": {}
+            },
         "std_error": {
-            "status" : "error",
-            "message" : "" 
-        },
+            "status": "error",
+            "message": ""
+            },
         "std_fail": {
-            "status" : "fail",
-            "data" : {}
+            "status": "fail",
+            "data": {}
+            }
         }
-}

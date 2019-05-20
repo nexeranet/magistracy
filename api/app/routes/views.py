@@ -11,7 +11,10 @@ views = Blueprint('views', __name__, template_folder='templates')
 @views.route("/")
 def index():
     url = 'https://min-api.cryptocompare.com/data/histominute?fsym=BTC&tsym=USD&limit=30'
-    res = requests.get(url)
+    try:
+        res = requests.get(url)
+    except requests.exceptions.ConnectionError:
+        return 'error'
     data = res.json()
     return render_template('preview.html', data=json.dumps(data))
 
