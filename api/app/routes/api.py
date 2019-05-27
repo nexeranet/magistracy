@@ -29,7 +29,10 @@ def write_json(data, filename='answer.json'):
 def old_quotes(time='M5'):
     time = time.upper()
     if time in api_config.times:
-        headers = {"Accept": "*/*", "Connection": "Keep-Alive", "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12)     Gecko/20050915 Firefox/1.0.7"}
+        headers = {
+            "Accept": "*/*",
+            "Connection": "Keep-Alive",
+            "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12) Gecko/20050915 Firefox/1.0.7"}
         r = requests.get('http://crypto-quotes.tsianalytics.com/apiquotes/{}'.format(time), headers=headers)
         data = r.json()
         return jsonify(data)
@@ -48,7 +51,10 @@ def old_correlations(time='M15', num=15):
         data['message'] = 'error. invalid params'
         return jsonify(data)
     else:
-        headers = {"Accept": "*/*", "Connection": "Keep-Alive", "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12)     Gecko/20050915 Firefox/1.0.7"}
+        headers = {
+            "Accept": "*/*",
+            "Connection": "Keep-Alive",
+            "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12) Gecko/20050915 Firefox/1.0.7"}
         r = requests.get('http://crypto-quotes.tsianalytics.com/api_correlations/{}/{}'.format(time, num), headers=headers)
         data = r.json()
         return jsonify(data)
@@ -61,7 +67,10 @@ def old_get_tahometer(coin="BTC", time='M5'):
         data['message'] = 'error. invalid params'
         return jsonify(data)
     else:
-        headers = {"Accept": "*/*", "Connection": "Keep-Alive", "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12)     Gecko/20050915 Firefox/1.0.7"}
+        headers = {
+            "Accept": "*/*",
+            "Connection": "Keep-Alive",
+            "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12) Gecko/20050915 Firefox/1.0.7"}
         r = requests.get('http://crypto-quotes.tsianalytics.com/get_tahometer/{}/{}'.format(coin, time), headers=headers)
         res = r.json()
         data = json_str['std_data']
