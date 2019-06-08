@@ -312,7 +312,6 @@ def correlations(time='M15', num=15):
             cc_arr.append(val.close)
         close_candles[cc] = cc_arr
 
-    print(close_candles)
     correlation_matrix = []
     i = 0
     j = 0

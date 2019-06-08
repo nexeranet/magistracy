@@ -67,7 +67,12 @@ def by_minutes():
             tr_db.add_by_minutes_info(cc=cc, interval=30, data=data['Data'])
 
     tbot.sendMessage('INSERTED coins by minutes: {}'.format(tr_db.crypto_currencies))
-    return 'by_minutes'
+    response = {
+            "status": "success",
+            "data": "Table inserted by minutes"
+            }
+
+    return jsonify(response)
 
 
 @apidb.route('add_info_by_hours')
@@ -90,7 +95,12 @@ def by_hours():
             tr_db.add_info_by_hours(cc=cc, interval=4, data=data['Data'])
 
     tbot.sendMessage('INSERTED coins by hours: {}'.format(tr_db.crypto_currencies))
-    return 'by_hours'
+    response = {
+            "status": "success",
+            "data": "Table inserted by hours"
+            }
+
+    return jsonify(response)
 
 
 @apidb.route('add_info_by_day')
@@ -101,4 +111,9 @@ def by_day():
 
     tbot.sendMessage('INSERTED coins by day: {}'.format(tr_db.crypto_currencies))
 
-    return 'by_day'
+    response = {
+            "status": "success",
+            "data": "Table inserted by day"
+            }
+
+    return jsonify(response)

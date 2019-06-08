@@ -1,5 +1,6 @@
 # helper for mat. models
 import math
+import decimal
 from app.models.base import main_int
 
 helperdb = main_int()
@@ -107,7 +108,8 @@ class mathHelper(object):
             denominator_part_y += pow(arr2[i] - avg_arr2, 2)
 
         denominator = math.sqrt(denominator_part_x * denominator_part_y)
-        return 0 if denominator == 0 else numerator / denominator
+        print(denominator)
+        return 0 if denominator == 0 else float(numerator) / float(denominator)
 
     # #
     # # mat models for coin
