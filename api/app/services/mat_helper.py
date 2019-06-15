@@ -1,38 +1,45 @@
 # helper for mat. models
 import math
 import decimal
+import sys 
 from app.models.base import main_int
 
 helperdb = main_int()
 
+sys.setrecursionlimit(1500)
 
 class mathHelper(object):
 
     def fill_ema_array(self, period, candles, emm_arr):
-
+        for x in range(period):
+            emm_arr.append(0)
         p = 2 / (period + 1)
         for i in range(period, -1, -1):
             if i == period:
                 s = 0
                 for j in range(period + 1, (period * 2) + 1, 1):
                     s += candles[j].close
-                emm_arr[i] = s / period
+                emm_arr.append(float(s / period))
             else:
-                emm_arr[i] = (candles[i].close * p) + emm_arr[i + 1] * (1 - p)
+                emm_arr[i] = (float(candles[i].close) * p) + float(emm_arr[i + 1]) * (1 - p)
+        print(emm_arr)
         return emm_arr
 
     def adx(self, candles):
-
+	
         sum_of_dx = 0
         for i in range(27, 13, -1):
             sum_of_dx += self.dx(i, candles)
+        print('adx', sum_of_dx)
         return sum_of_dx / 14
 
     def dx(self, i, candles):
 
         tr_14_i = self.tr_14(i, candles)
+        print('TR_14_i', tr_14_i)
         pdi = 0 if tr_14_i == 0 else 100 * (self.positive_dm_14(i, candles) / tr_14_i)
-        mdi = 0 if tr_14_i == 0 else 100 * (self.positive_dm_14(i, candles) / tr_14_i)
+        mdi = 0 if tr_14_i == 0 else 100 * (self.negative_dm_14(i, candles) / tr_14_i)
+        print('dx: ',pdi,mdi, pdi+mdi, 100 * (abs(pdi - mdi)/(pdi + mdi)))
         return 0 if pdi + mdi == 0 else 100 * (abs(pdi - mdi)/(pdi + mdi))
 
     def positive_dm_14(self, i, candles):
@@ -51,10 +58,12 @@ class mathHelper(object):
         if i == 14:
             sum_of_ndm_1 = 0
             for j in range(1, 15, 1):
-                sum_of_ndm_1 += self.negative_dm_14(j, candles)
+                sum_of_ndm_1 += self.negative_dm_1(j, candles)
+            print('sum_of_ndm_1',sum_of_ndm_1)
             return sum_of_ndm_1
         else:
             prev_ndm_14 = self.negative_dm_14(i - 1, candles)
+            print('prev_ndm-14',prev_ndm_14)
             return prev_ndm_14 - (prev_ndm_14 / 14) + self.negative_dm_1(i, candles)
 
     def tr_14(self, i, candles):
@@ -133,8 +142,8 @@ class mathHelper(object):
                 for i in range(1, lwma_p + 1, 1):
                     weight_sum += abs(i - lwma_p - 1)
                 lwma = {}
-                lwma['last_candle'] = candles[0].close
-                lwma['val'] = sum(lwma_numerator_parts)/weight_sum
+                lwma['last_candle'] = float(candles[0].close)
+                lwma['val'] = float(sum(lwma_numerator_parts)/weight_sum)
                 lwmas.append(lwma)
 
         return lwmas
@@ -156,12 +165,12 @@ class mathHelper(object):
                 std_sum += (candle.close - ma)**2
 
             std = math.sqrt(std_sum/19)
-            bb_up = ma + 2*std
-            bb_down = ma - 2 * std
-            bb_last_candle = candles[0].close
+            bb_up = float(ma) + 2*std
+            bb_down = float(ma) - 2*std
+            bb_last_candle = float(candles[0].close)
             return {
-                    "up": bb_up,
-                    "down": bb_down,
+                    "up": float(bb_up),
+                    "down": float(bb_down),
                     "last_candle": bb_last_candle
                     }
 
@@ -173,7 +182,7 @@ class mathHelper(object):
             tr_sum = 0
             for i in range(1, 15, 1):
                 tr_sum += max(c[i-1].high - c[i-1].low, c[i-1].high - c[i].close, c[i].close - c[i-1].low)
-            return tr_sum/14
+            return float(tr_sum/14)
 
     def DC_calc(self, coin, period):
         candles = helperdb.get_last_candles(coin, period, 15)
@@ -193,10 +202,10 @@ class mathHelper(object):
                 if candle.low < dc_down:
                     dc_down = candle.low
 
-            dc_last_candle = candles[0].close
+            dc_last_candle = float(candles[0].close)
             return {
-                    "up": dc_up,
-                    "down": dc_down,
+                    "up": float(dc_up),
+                    "down": float(dc_down),
                     "last_candle": dc_last_candle
                     }
 
@@ -228,7 +237,7 @@ class mathHelper(object):
                 return 100
             else:
                 rs = cu/abs(cd)
-                return 100*(1 - 1/(1 + rs))
+                return float(100*(1 - 1/(1 + rs)))
 
     def BBP_calc(self, coin, period):
         candles = helperdb.get_last_candles(coin, period, 13)
@@ -249,7 +258,7 @@ class mathHelper(object):
             if bears == 0:
                 return 0
             else:
-                return bulls/bears
+                return float(bulls/bears)
 
     def MACD_calc(self, coin, period):
         pl = 34
@@ -273,8 +282,8 @@ class mathHelper(object):
             macd = macds[0]
 
             return {
-                    "signal": signal,
-                    "macd": macd
+                    "signal": float(signal),
+                    "macd": float(macd)
                     }
 
     def AO_calc(self, coin, period):
@@ -310,16 +319,18 @@ class mathHelper(object):
 
             ao_2 = sma_aos - sma_aol
             return {
-                    "f": ao_1,
-                    "s": ao_2
+                    "f": float(ao_1),
+                    "s": float(ao_2)
                     }
 
     def ADX_calc(self, coin, period):
         candles = helperdb.get_last_candles(coin, period, 28)
+        print(len(candles))
         if len(candles) < 28:
             return None
         else:
-            return self.adx(candles)
+            print(self.adx(candles))
+            return float(self.adx(candles))
 
     def SO_calc(self, coin, period):
         candles = helperdb.get_last_candles(coin, period, 7)
@@ -333,7 +344,7 @@ class mathHelper(object):
                     max_high = candle.high
                 if candle.low < min_low:
                     min_low = candle.low
-            return 0 if max_high - min_low == 0 else 100*((candles[0].close - min_low)/(max_high-min_low))
+            return 0 if max_high - min_low == 0 else float(100*((candles[0].close - min_low)/(max_high-min_low)))
 
 
 math_helper = mathHelper()

@@ -140,7 +140,7 @@ def quotes(period='M5'):
 
         if cc['rsi'] is not None and cc['rsi'] > 70:
             cc['sell_scores'] += api_config.tahometer_scores['RSI']
-        elif cc['rsi'] is not None and cc['rci'] < 30:
+        elif cc['rsi'] is not None and cc['rsi'] < 30:
             cc['buy_scores'] += api_config.tahometer_scores['RSI']
         # BBP
         cc['bbp'] = math_helper.BBP_calc(cc['name'], period)
@@ -184,7 +184,6 @@ def quotes(period='M5'):
         cc['sell_percent'] = 0 if scores_sum == 0 else (cc['sell_scores']*100)/scores_sum
         cc['buy_percent'] = 0 if scores_sum == 0 else (cc['buy_scores']*100)/scores_sum
         cc['tahometer_percent'] = 50 if scores_sum == 0 else (cc['buy_scores']*100)/scores_sum
-
     return jsonify(data)
 
 
@@ -235,7 +234,7 @@ def quote(coin="BTC", period='M5'):
 
     if cc['rsi'] is not None and cc['rsi'] > 70:
         cc['sell_scores'] += api_config.tahometer_scores['RSI']
-    elif cc['rsi'] is not None and cc['rci'] < 30:
+    elif cc['rsi'] is not None and cc['rsi'] < 30:
         cc['buy_scores'] += api_config.tahometer_scores['RSI']
     # BBP
     cc['bbp'] = math_helper.BBP_calc(cc['name'], period)
