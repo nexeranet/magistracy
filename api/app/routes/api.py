@@ -87,7 +87,7 @@ def q_default():
     return redirect('M15', code=302)
 
 
-@api.route("/quotes/<period>")
+@api.route("/quotes/<period>", methods=['GET', 'POST'])
 def quotes(period='M5'):
     period = period.upper()
     if period not in api_config.times:
@@ -95,7 +95,10 @@ def quotes(period='M5'):
         data['message'] = 'Error. Invalid timeframe'
         return jsonify(data)
 
-    data = json_str['std_data']
+    data = {
+        "status" : "success",
+        "data" : {}
+    }
     data['data']['crypto_currencies'] = []
     for cc in api_config.crypto_currencies:
         currency = {}
@@ -184,10 +187,14 @@ def quotes(period='M5'):
         cc['sell_percent'] = 0 if scores_sum == 0 else (cc['sell_scores']*100)/scores_sum
         cc['buy_percent'] = 0 if scores_sum == 0 else (cc['buy_scores']*100)/scores_sum
         cc['tahometer_percent'] = 50 if scores_sum == 0 else (cc['buy_scores']*100)/scores_sum
-    return jsonify(data)
+    response = jsonify(data) 
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
-@api.route('/quote/<coin>/<period>')
+@api.route('/quote/<coin>/<period>', methods=['GET', 'POST'])
 def quote(coin="BTC", period='M5'):
 
     if period not in api_config.times or coin not in api_config.crypto_currencies:
@@ -195,7 +202,10 @@ def quote(coin="BTC", period='M5'):
         data['message'] = 'error. invalid params'
         return jsonify(data)
 
-    data = json_str['std_data']
+    data = {
+        "status" : "success",
+        "data" : {}
+    }
     lwma_periods = [14, 55, 120, 240]
     cc = {}
     cc['name'] = coin
@@ -281,14 +291,21 @@ def quote(coin="BTC", period='M5'):
 
     data['data']['coin'] = cc
 
-    return jsonify(data)
+    response = jsonify(data) 
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
-@api.route('/correlations/<time>/<int:num>')
+@api.route('/correlations/<time>/<int:num>', methods=['GET', 'POST'])
 def correlations(time='M15', num=15):
     time = time.upper()
     if time not in api_config.correlations_times or num not in api_config.correlations_periods:
-        data = json_str['std_error']
+        data = {
+            "status" : "success",
+            "data" : {}
+        }
         data['message'] = 'error. invalid params'
         return jsonify(data)
 
@@ -318,11 +335,15 @@ def correlations(time='M15', num=15):
         row = []
         for cc_j in api_config.crypto_currencies:
             result = math_helper.get_correlation(close_candles[cc_i], close_candles[cc_j])
-            row.append(result)
+            row.append(round(result, 10))
             j += 1
         correlation_matrix.append(row)
         i += 1
         j = 0
 
     data['data']['correlation_matrix'] = correlation_matrix
-    return jsonify(data)
+    response = jsonify(data) 
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response

@@ -22,7 +22,6 @@ class mathHelper(object):
                 emm_arr.append(float(s / period))
             else:
                 emm_arr[i] = (float(candles[i].close) * p) + float(emm_arr[i + 1]) * (1 - p)
-        print(emm_arr)
         return emm_arr
 
     def adx(self, candles):
@@ -30,16 +29,13 @@ class mathHelper(object):
         sum_of_dx = 0
         for i in range(27, 13, -1):
             sum_of_dx += self.dx(i, candles)
-        print('adx', sum_of_dx)
         return sum_of_dx / 14
 
     def dx(self, i, candles):
 
         tr_14_i = self.tr_14(i, candles)
-        print('TR_14_i', tr_14_i)
-        pdi = 0 if tr_14_i == 0 else 100 * (self.positive_dm_14(i, candles) / tr_14_i)
-        mdi = 0 if tr_14_i == 0 else 100 * (self.negative_dm_14(i, candles) / tr_14_i)
-        print('dx: ',pdi,mdi, pdi+mdi, 100 * (abs(pdi - mdi)/(pdi + mdi)))
+        pdi = 0 if tr_14_i == 0 else 100 * (float(self.positive_dm_14(i, candles)) / tr_14_i)
+        mdi = 0 if tr_14_i == 0 else 100 * (float(self.negative_dm_14(i, candles)) / tr_14_i)
         return 0 if pdi + mdi == 0 else 100 * (abs(pdi - mdi)/(pdi + mdi))
 
     def positive_dm_14(self, i, candles):
@@ -47,34 +43,32 @@ class mathHelper(object):
         if i == 14:
             sum_of_pdm_1 = 0
             for j in range(1, 15, 1):
-                sum_of_pdm_1 += self.positive_dm_1(j, candles)
+                sum_of_pdm_1 += float(self.positive_dm_1(j, candles))
             return sum_of_pdm_1
         else:
-            prev_pdm_14 = self.positive_dm_14(i - 1, candles)
-            return prev_pdm_14 - (prev_pdm_14 / 14) + self.positive_dm_1(i, candles)
+            prev_pdm_14 = float(self.positive_dm_14(i - 1, candles))
+            return prev_pdm_14 - (prev_pdm_14 / 14) + float(self.positive_dm_1(i, candles))
 
     def negative_dm_14(self, i, candles):
 
         if i == 14:
             sum_of_ndm_1 = 0
             for j in range(1, 15, 1):
-                sum_of_ndm_1 += self.negative_dm_1(j, candles)
-            print('sum_of_ndm_1',sum_of_ndm_1)
+                sum_of_ndm_1 += float(self.negative_dm_1(j, candles))
             return sum_of_ndm_1
         else:
-            prev_ndm_14 = self.negative_dm_14(i - 1, candles)
-            print('prev_ndm-14',prev_ndm_14)
-            return prev_ndm_14 - (prev_ndm_14 / 14) + self.negative_dm_1(i, candles)
+            prev_ndm_14 = float(self.negative_dm_14(i - 1, candles))
+            return prev_ndm_14 - (prev_ndm_14 / 14) + float(self.negative_dm_1(i, candles))
 
     def tr_14(self, i, candles):
         if i == 14:
             sum_of_tr_1 = 0
             for j in range(1, 15, 1):
-                sum_of_tr_1 += self.tr_1(j, candles)
+                sum_of_tr_1 += float(self.tr_1(j, candles))
             return sum_of_tr_1
         else:
-            prev_tr_14 = self.tr_14(i - 1, candles)
-            return prev_tr_14 - (prev_tr_14 / 14) + self.tr_1(i, candles)
+            prev_tr_14 = float(self.tr_14(i - 1, candles))
+            return prev_tr_14 - (prev_tr_14 / 14) + float(self.tr_1(i, candles))
 
     def positive_dm_1(self, i, candles):
         return max(candles[i].high - candles[i - 1].high, 0) if candles[i].high - candles[i - 1].high > candles[i - 1].low - candles[i].low else 0
@@ -117,7 +111,6 @@ class mathHelper(object):
             denominator_part_y += pow(arr2[i] - avg_arr2, 2)
 
         denominator = math.sqrt(denominator_part_x * denominator_part_y)
-        print(denominator)
         return 0 if denominator == 0 else float(numerator) / float(denominator)
 
     # #
@@ -325,11 +318,9 @@ class mathHelper(object):
 
     def ADX_calc(self, coin, period):
         candles = helperdb.get_last_candles(coin, period, 28)
-        print(len(candles))
         if len(candles) < 28:
             return None
         else:
-            print(self.adx(candles))
             return float(self.adx(candles))
 
     def SO_calc(self, coin, period):
