@@ -1,7 +1,7 @@
 # Use the Python3.7.2 image
 FROM python:3.7.2-stretch
 
-# Set maintainer 
+# Set maintainer
 MAINTAINER Oleh Kyslashko "nuxkill@gmail.com"
 
 # Set an environment variable with the directory
@@ -13,7 +13,7 @@ RUN mkdir $APP
 
 WORKDIR $APP
 
-# Copy the current directory contents into the container at /app 
+# Copy the current directory contents into the container at /app
 ADD . $APP
 
 # Install the dependencies

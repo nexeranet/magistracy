@@ -21,7 +21,7 @@ services:
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_DB=${POSTGRES_DB}
       - SECRET_KEY=${SECRET_KEY}
-    volumes: 
+    volumes:
       - ./api:/app
     expose:
       - 8080
@@ -30,16 +30,7 @@ services:
       - backend
     depends_on:
       - postgres
-        #app: 
-        #  build: ./app
-        #  tty: true
-        #  container_name: app
-        #  user: "${UID}:${GID}"
-        #  volumes:
-        #    - ./app:/app
-        #  networks:
-        #    - frontend
-    
+
   nginx:
     build: ./nginx
     container_name: nginx

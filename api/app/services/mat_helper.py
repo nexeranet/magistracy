@@ -1,12 +1,12 @@
 # helper for mat. models
 import math
-import decimal
-import sys 
+import sys
 from app.models.base import main_int
 
 helperdb = main_int()
 
 sys.setrecursionlimit(1500)
+
 
 class mathHelper(object):
 
@@ -25,7 +25,7 @@ class mathHelper(object):
         return emm_arr
 
     def adx(self, candles):
-	
+
         sum_of_dx = 0
         for i in range(27, 13, -1):
             sum_of_dx += self.dx(i, candles)

@@ -14,7 +14,7 @@ def create_app():
     models.init_app(app)
     routes.init_app(app)
     migrate.init_app(app, models)
-    CORS(app) 
+    CORS(app)
     return app
 
 
